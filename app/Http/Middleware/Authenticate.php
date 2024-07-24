@@ -23,6 +23,11 @@ class Authenticate extends Middleware
                 session()->flash('fail','You must be logged in to access this page');
                 return route('admin.login');
             }
+
+            if( $request->routeIs('seller.*') ){
+                session()->flash('fail','You must login first');
+                return route('seller.login');
+            }
         }
     }
 }

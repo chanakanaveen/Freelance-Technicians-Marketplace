@@ -44,7 +44,7 @@
 			href="/back/vendors/styles/icon-font.min.css"
 		/>
 		<link rel="stylesheet" type="text/css" href="/back/vendors/styles/style.css" />
-        <link rel="stylesheet" href="/extra-assets/ijabo/ijabo.min.css">
+        {{-- <link rel="stylesheet" href="/extra-assets/ijabo/ijabo.min.css"> --}}
         @livewireStyles
 		@stack('stylesheet')
 	</head>
@@ -60,8 +60,14 @@
 				</div>
 				<div class="login-menu">
 					<ul>
-						@if ( !Route::is('admin.*') )
-                            <li><a href="register.html">Register</a></li>
+                        @if ( !Route::is('admin.*') )
+
+						 @if ( Route::is('seller.login') )
+						      <li><a href="{{ route('seller.register') }}">Register</a></li>
+						 @else
+						      <li><a href="{{ route('seller.login') }}">Login</a></li>
+						 @endif
+
 						@endif
 					</ul>
 				</div>
@@ -95,8 +101,8 @@
 				});
 			}
 		</script>
-        <script src="/extra-assets/ijabo/ijabo.min.js"></script>
-		<script src="/extra-assets/ijabo/jquery.ijaboViewer.min.js"></script>
+        {{-- <script src="/extra-assets/ijabo/ijabo.min.js"></script>
+		<script src="/extra-assets/ijabo/jquery.ijaboViewer.min.js"></script> --}}
 		<script src="/extra-assets/ijaboCropTool/ijaboCropTool.min.js"></script>
         <script>
 			window.addEventListener('showToastr', function(event){

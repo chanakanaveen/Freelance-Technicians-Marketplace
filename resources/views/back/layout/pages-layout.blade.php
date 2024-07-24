@@ -434,7 +434,7 @@
 
                         @if (Route::is('admin.*') )
                             <li class="dropdown">
-                                <a href="{{ route('admin.home') }}" class="dropdown-toggle no-arrow">
+                                <a href="{{ route('admin.home') }}" class="dropdown-toggle no-arrow {{ route::is('admin.home')? 'active' : '' }}">
                                     <span class="micon fa fa-home"></span
                                     ><span class="mtext">Home</span>
                                 </a>
@@ -454,12 +454,63 @@
                                 <div class="sidebar-small-cap">Settings</div>
                             </li>
                             <li>
-                                <a href="{{ route('admin.profile') }}" class="dropdown-toggle no-arrow">
+                                <a href="{{ route('admin.profile') }}" class="dropdown-toggle no-arrow {{ route::is('admin.profile')? 'active' : '' }}">
                                     <span class="micon fa fa-user"></span
                                     ><span class="mtext">Profile</span>
                                 </a>
                             </li>
-                        @else
+
+                        @elseif (Route::is('seller.*') )
+                        <li>
+							<a href="{{ route('seller.home') }}" class="dropdown-toggle no-arrow {{ Route::is('seller.home') ? 'active' : '' }}">
+								<span class="micon fa fa-home"></span
+								><span class="mtext">Home</span>
+							</a>
+						</li>
+
+
+						<li>
+							<a href="invoice.html" class="dropdown-toggle no-arrow">
+								<span class="micon bi bi-receipt-cutoff"></span
+								><span class="mtext">Invoice</span>
+							</a>
+						</li>
+
+						
+
+						<li>
+							<div class="dropdown-divider"></div>
+						</li>
+						<li>
+							<div class="sidebar-small-cap">Settings</div>
+						</li>
+
+						<li>
+							<a
+								href="{{ route('seller.profile') }}"
+
+								class="dropdown-toggle no-arrow {{ Route::is('seller.profile') ? 'active' : '' }}"
+							>
+								<span class="micon fa fa-user"></span>
+								<span class="mtext"
+									>Profile
+									</span>
+							</a>
+						</li>
+	                    <li>
+							<a
+								href="{{ route('seller.shop-settings') }}"
+
+								class="dropdown-toggle no-arrow {{ Route::is('seller.shop-settings') ? 'active' : '' }}"
+							>
+								<span class="micon bi bi-shop"></span>
+								<span class="mtext"
+									>Shop Settigs
+									</span>
+							</a>
+						</li>
+
+                        @elseif (Route::is('client.*') )
 
                         @endif
 
@@ -502,8 +553,7 @@
 				});
 			}
 		</script>
-        {{-- <script src="/extra-assets/ijabo/ijabo.min.js"></script>
-		<script src="/extra-assets/ijabo/jquery.ijaboViewer.min.js"></script> --}}
+
 		<script src="/extra-assets/ijaboCropTool/ijaboCropTool.min.js"></script>
         <!-- Toastr JS -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
@@ -511,6 +561,16 @@
 		<script type="text/javascript" src="/back/src/plugins/noty/layouts/topRight.js"></script>
 		<script type="text/javascript" src="/back/src/plugins/noty/layouts/top.js"></script>
 		<script type="text/javascript" src="/back/src/plugins/noty/themes/default.js"></script>
+        <script>
+			window.addEventListener('showToastr', function(event){
+                  toastr.remove();
+				  if( event.detail[0].type === 'info' ){ toastr.info(event.detail[0].message); }
+				  else if( event.detail[0].type === 'success' ){ toastr.success(event.detail[0].message); }
+				  else if( event.detail[0].type === 'error' ){ toastr.error(event.detail[0].message); }
+				  else if( event.detail[0].type === 'warning' ){ toastr.warning(event.detail[0].message); }
+				  else{ return false; }
+			});
+		</script>
         @livewireScripts
         @stack('scripts')
 

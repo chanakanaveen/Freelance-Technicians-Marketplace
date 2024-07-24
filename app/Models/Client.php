@@ -32,6 +32,7 @@ class Client extends Authenticatable
         'latitude',
         'longitude',
         'email_verified_at',
+        'verified',
         'status',
     ];
 

@@ -227,7 +227,7 @@ class AdminController extends Controller
         $admin->username = $request->username;
         $admin->save();
 
-        $this->showToastr('success','Your personal details have been successfully updated.');
+        // $this->showToastr('success','Your personal details have been successfully updated.');
 
         return redirect()->route('admin.profile')->with('success','Profile updated successfully');
     }

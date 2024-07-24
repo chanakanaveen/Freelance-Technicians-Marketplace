@@ -15,8 +15,8 @@ class CreateSellersTable extends Migration
     {
         Schema::create('sellers', function (Blueprint $table) {
             $table->id();
-            $table->string('namme')->nullable();
-            $table->string('usernamme')->unique()->nullable();
+            $table->string('name')->nullable();
+            $table->string('username')->unique()->nullable();
             $table->string('email')->unique()->nullable();
             $table->string('password')->nullable();
             $table->string('picture')->nullable();
@@ -28,6 +28,7 @@ class CreateSellersTable extends Migration
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
             $table->timestamp('email_verified_at')->nullable();
+            $table->integer('verified')->default(0);
             $table->enum('status', ['Pending', 'Active'])->default('Pending');
             $table->timestamps();
         });
