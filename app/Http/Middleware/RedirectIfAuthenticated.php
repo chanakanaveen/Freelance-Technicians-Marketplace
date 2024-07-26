@@ -31,6 +31,10 @@ class RedirectIfAuthenticated
                 if( $guard === 'seller' ){
                     return redirect()->route('seller.home');
                 }
+
+                if( $guard === 'client' ){
+                    return redirect()->route('client.home');
+                }
             }
         }
 

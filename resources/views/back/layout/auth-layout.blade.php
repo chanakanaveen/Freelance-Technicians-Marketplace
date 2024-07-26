@@ -60,15 +60,19 @@
 				</div>
 				<div class="login-menu">
 					<ul>
-                        @if ( !Route::is('admin.*') )
+                        @if (!Route::is('admin.*'))
+                            @if (Route::is('seller.login'))
+                                <li><a href="{{ route('seller.register') }}">Register</a></li>
+                            @elseif (Route::is('seller.register'))
+                                <li><a href="{{ route('seller.login') }}">Login</a></li>
+                            @endif
 
-						 @if ( Route::is('seller.login') )
-						      <li><a href="{{ route('seller.register') }}">Register</a></li>
-						 @else
-						      <li><a href="{{ route('seller.login') }}">Login</a></li>
-						 @endif
-
-						@endif
+                            @if (Route::is('client.login'))
+                                <li><a href="{{ route('client.register') }}">Register</a></li>
+                            @elseif (Route::is('client.register'))
+                                <li><a href="{{ route('client.login') }}">Login</a></li>
+                            @endif
+                        @endif
 					</ul>
 				</div>
 			</div>

@@ -133,10 +133,9 @@ class SellerController extends Controller
         );
 
         if( Auth::guard('seller')->attempt($creds) ){
-            //  return redirect()->route('seller.home');
+
             if( !auth('seller')->user()->verified ){
-                auth('seller')->logout();
-                return redirect()->route('seller.login')->with('fail','Your account is not verified. Check in your email and click on the link we had sent in order to verify your email for seller account.');
+                return redirect()->route('seller.seller-details');
             }else{
                 return redirect()->route('seller.home');
             }
@@ -149,5 +148,153 @@ class SellerController extends Controller
     public function logoutHandler(Request $request){
         Auth::guard('seller')->logout();
         return redirect()->route('seller.login')->with('fail','You are logged out!');
-    } 
+    }
+
+    //seller details
+    public function sellerDetails(Request $request){
+        $seller = null;
+        if( Auth::guard('seller')->check() ){
+            $seller = Auth::guard('seller')->user();
+        }
+        $provinces = DB::table('provinces')->get();
+        $districts = DB::table('districts')->get();
+        $cities = DB::table('cities')->get();
+        $services = DB::table('services')->get();
+
+        $data = [
+            'pageTitle'=>'Seller Details',
+            'seller'=>$seller,
+            'provinces'=>$provinces,
+            'districts'=>$districts,
+            'cities'=>$cities,
+            'services'=>$services
+        ];
+        return view('back.pages.seller.seller-details',$data);
+    }
+
+    //change profile picture
+    public function changeProfilePicture(Request $request){
+
+
+        $seller = Seller::findOrFail(auth()->id());
+        $path = 'images/users/sellers/';
+
+        if($request->hasFile('sellerProfilePictureFile')){
+            $file = $request->file('sellerProfilePictureFile');
+            $old_picture = $seller->getAttributes()['picture'];
+            $file_path = $path.$old_picture;
+            $filename = 'SELLER_IMG_'.rand(2,1000).$seller->id.time().uniqid().'.jpg';
+
+            $upload = $file->move(public_path($path),$filename);
+            if($upload){
+                if( $old_picture != null && File::exists(public_path($path.$old_picture)) ){
+                    File::delete(public_path($path.$old_picture));
+                }
+                $seller->update(['picture'=>$filename]);
+                return response()->json(['status'=>1,'msg'=>'Your profile picture has been successfully updated.']);
+            }else{
+                return response()->json(['status'=>0,'msg'=>'Something went wrong.']);
+            }
+        }
+
+        // return redirect()->route('seller.seller-details')->with('success','Profile picture updated successfully');
+    }
+
+    //save seller details
+    public function saveSellerDetails(Request $request){
+        $request->validate([
+            'name'=>'required',
+            'phone'=>'required',
+            'address'=>'required',
+            'provinces'=>'required',
+            'districts'=>'required',
+            'cities'=>'required',
+            'service1'=>'required',
+            'service2'=>'required',
+            'service3'=>'required',
+        ]);
+
+        $seller = Seller::findOrFail(auth()->id());
+        $seller->name = $request->name;
+        $seller->phone = $request->phone;
+        $seller->address = $request->address;
+        $seller->provinces = $request->provinces;
+        $seller->districts = $request->districts;
+        $seller->cities = $request->cities;
+        $seller->service1 = $request->service1;
+        $seller->service2 = $request->service2;
+        $seller->service3 = $request->service3;
+        $seller->verified = "1";
+
+        $saved = $seller->save();
+        if( $saved ){
+            return redirect()->route('seller.home')->with('success','Seller details updated successfully.');
+        }else{
+            return redirect()->route('seller.seller-details')->with('fail','Something went wrong.');
+        }
+
+    }
+
+    //profile view
+    public function profileView(Request $request){
+        $seller = null;
+        if( Auth::guard('seller')->check() ){
+            $seller = Seller::findOrFail(auth()->id());
+        }
+        $provinces = DB::table('provinces')->get();
+        $districts = DB::table('districts')->get();
+        $cities = DB::table('cities')->get();
+        $services = DB::table('services')->get();
+        $data = [
+            'pageTitle'=>'Seller Profile',
+            'seller'=>$seller,
+            'provinces'=>$provinces,
+            'districts'=>$districts,
+            'cities'=>$cities,
+            'services' =>$services,
+        ];
+
+        return view('back.pages.seller.profile', $data);
+    }
+
+    //update profile
+    public function updateProfile(Request $request){
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'username' => 'required',
+            'address' => 'required',
+            'phone'=> 'required',
+            'provinces' => 'required',
+            'districts' => 'required',
+            'cities' => 'required',
+            'service1' => 'required',
+            'service2' => 'required',
+            'service3' => 'required',
+        ]);
+
+        $seller = Seller::findOrFail(auth()->id());
+        $seller->name = $request->name;
+        $seller->email = $request->email;
+        $seller->username = $request->username;
+        $seller->address = $request->address;
+        $seller->phone = $request->phone;
+        $seller->provinces = $request->provinces;
+        $seller->districts = $request->districts;
+        $seller->cities = $request->cities;
+        $seller->service1 = $request->service1;
+        $seller->service2 = $request->service2;
+        $seller->service3 = $request->service3;
+        $saved = $seller->save();
+
+        if($saved){
+            return redirect()->route('seller.profile')->with('success','Profile updated successfully');
+        }else{
+            return redirect()->route('seller.profile')->with('fail','Something went wrong.');
+        }
+
+        // $this->showToastr('success','Your personal details have been successfully updated.');
+
+        // return redirect()->route('admin.profile')->with('success','Profile updated successfully');
+    }
 }

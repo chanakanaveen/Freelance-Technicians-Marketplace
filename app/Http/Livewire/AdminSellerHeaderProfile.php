@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Admin;
+use App\Models\Client;
 use App\Models\Seller;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,6 +13,7 @@ class AdminSellerHeaderProfile extends Component
 
     public $admin;
     public $seller;
+    public $client;
 
     public $listeners = [
         'updateAdminSellerHeaderInfo'=>'$refresh'
@@ -23,6 +25,9 @@ class AdminSellerHeaderProfile extends Component
         }
         if( Auth::guard('seller')->check() ){
             $this->seller = Seller::findOrFail(auth()->id());
+        }
+        if( Auth::guard(('client'))->check() ){
+            $this->client = Client::findOrFail(auth()->id());
         }
     }
 

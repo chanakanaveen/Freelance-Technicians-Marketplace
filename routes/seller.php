@@ -17,7 +17,6 @@ Route::prefix('seller')->name('seller.')->group(function(){
            Route::post('/send-password-reset-link','sendPasswordResetLink')->name('send-password-reset-link');
            Route::get('/password/reset/{token}','showResetForm')->name('reset-password');
            Route::post('/reset-password-handler','resetPasswordHandler')->name('reset-password-handler');
-        //    Route::get('/','home')->name('home');
         });
     });
 
@@ -30,6 +29,10 @@ Route::prefix('seller')->name('seller.')->group(function(){
            Route::post('/change-profile-picture','changeProfilePicture')->name('change-profile-picture');
            Route::get('/shop-settings','shopSettings')->name('shop-settings');
            Route::post('/shop-setup','shopSetup')->name('shop-setup');
+           Route::get('/seller-details','sellerDetails')->name('seller-details');
+           Route::post('/save-seller-details','saveSellerDetails')->name('save-seller-details');
+           Route::post('/update_profile','updateProfile')->name('update_profile');
+           Route::get('/change-password','changePassword')->name('change-password');
         });
 
         // //Product routes

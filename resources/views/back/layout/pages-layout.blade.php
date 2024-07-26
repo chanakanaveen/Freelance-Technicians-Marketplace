@@ -448,12 +448,6 @@
                             </li>
 
                             <li>
-                                <div class="dropdown-divider"></div>
-                            </li>
-                            <li>
-                                <div class="sidebar-small-cap">Settings</div>
-                            </li>
-                            <li>
                                 <a href="{{ route('admin.profile') }}" class="dropdown-toggle no-arrow {{ route::is('admin.profile')? 'active' : '' }}">
                                     <span class="micon fa fa-user"></span
                                     ><span class="mtext">Profile</span>
@@ -476,15 +470,6 @@
 							</a>
 						</li>
 
-						
-
-						<li>
-							<div class="dropdown-divider"></div>
-						</li>
-						<li>
-							<div class="sidebar-small-cap">Settings</div>
-						</li>
-
 						<li>
 							<a
 								href="{{ route('seller.profile') }}"
@@ -497,20 +482,29 @@
 									</span>
 							</a>
 						</li>
-	                    <li>
-							<a
-								href="{{ route('seller.shop-settings') }}"
-
-								class="dropdown-toggle no-arrow {{ Route::is('seller.shop-settings') ? 'active' : '' }}"
-							>
-								<span class="micon bi bi-shop"></span>
-								<span class="mtext"
-									>Shop Settigs
-									</span>
-							</a>
-						</li>
 
                         @elseif (Route::is('client.*') )
+
+                            <li>
+                                <a href="{{ route('client.home') }}" class="dropdown-toggle no-arrow {{ Route::is('client.home') ? 'active' : '' }}">
+                                    <span class="micon fa fa-home"></span
+                                    ><span class="mtext">Home</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a
+                                    href="{{ route('client.profile') }}"
+
+                                    class="dropdown-toggle no-arrow {{ Route::is('client.profile') ? 'active' : '' }}"
+                                >
+                                    <span class="micon fa fa-user"></span>
+                                    <span class="mtext"
+                                        >Profile
+                                        </span>
+                                </a>
+                            </li>
+
 
                         @endif
 
