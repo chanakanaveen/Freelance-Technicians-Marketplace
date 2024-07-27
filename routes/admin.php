@@ -22,5 +22,7 @@ Route::prefix('admin')->name('admin.')->group(function (){
         Route::post('/update_profile',[AdminController::class,'updateProfile'])->name('update_profile');
         Route::post('/change-profile-picture',[AdminController::class,'changeProfilePicture'])->name('change-profile-picture');
         Route::post('/change-password',[AdminController::class,'changePassword'])->name('change-password');
+        Route::get('/users', [AdminController::class,'users'])->name('users');
+        Route::get('/sellers', [AdminController::class,'sellers'])->name('sellers');
     });
 });

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Admin;
+use App\Models\Client;
 use constGuards;
 use constDefaults;
 use Illuminate\Support\Facades\DB;
@@ -283,5 +284,49 @@ class AdminController extends Controller
         }else{
             return redirect()->route('admin.profile')->with('fail','Old password is incorrect');
         }
+    }
+
+    //user view page
+    public function users(Request $request){ //dd('sssssss');
+        $admin = null;
+        if( Auth::guard('admin')->check() ){
+            $admin = Admin::findOrFail(auth()->id());
+        }
+        $client = DB::table('clients as a')->selectRaw('a.name, a.email, a.phone, a.address, b.name_en as province, c.name_en as district, d.name_en as city')
+                ->leftJoin('provinces as b','b.id','=','a.provinces')
+                ->leftJoin('districts as c','c.id','=','a.districts')
+                ->leftJoin('cities as d','d.id','=','a.cities')
+                ->get();
+
+        $data = [
+            'pageTitle'=>'Client Profile',
+            'client'=>$client,
+            'admin'=>$admin,
+        ];
+
+        return view('back.pages.admin.users', $data);
+    }
+
+     //user view page
+     public function sellers(Request $request){ //dd('sssssss');
+        $admin = null;
+        if( Auth::guard('admin')->check() ){
+            $admin = Admin::findOrFail(auth()->id());
+        }
+        $sellers = DB::table('sellers as a')->selectRaw('a.name, a.email, a.phone, a.address, c.name_en as district, d.name_en as city, e.title  as service1, f.title  as service2, g.title  as service3, IF(a.status = 1, "Verifyed", IF(a.status = 2,"Pending","Not verified")) as status')
+                ->leftJoin('districts as c','c.id','=','a.districts')
+                ->leftJoin('cities as d','d.id','=','a.cities')
+                ->leftJoin('services as e','e.id','=','a.service1')
+                ->leftJoin('services as f','f.id','=','a.service2')
+                ->leftJoin('services as g','g.id','=','a.service3')
+                ->get();
+        
+        $data = [
+            'pageTitle'=>'Client Profile',
+            'sellers'=>$sellers,
+            'admin'=>$admin,
+        ];
+
+        return view('back.pages.admin.sellers', $data);
     }
 }

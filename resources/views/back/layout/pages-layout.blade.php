@@ -441,9 +441,16 @@
                             </li>
 
                             <li class="dropdown">
-                                <a href="javascript:;" class="dropdown-toggle no-arrow">
-                                    <span class="micon bi bi-pie-chart"></span
-                                    ><span class="mtext">Charts</span>
+                                <a href="{{ route('admin.sellers') }}" class="dropdown-toggle no-arrow {{ route::is('admin.sellers')? 'active' : '' }}">
+                                    <span class="micon bi bi-people-fill"></span
+                                    ><span class="mtext">Sellers Details</span>
+                                </a>
+                            </li>
+
+                            <li class="dropdown">
+                                <a href="{{ route('admin.users') }}" class="dropdown-toggle no-arrow {{ route::is('admin.users')? 'active' : '' }}">
+                                    <span class="micon bi bi-people-fill"></span
+                                    ><span class="mtext">Customers Details</span>
                                 </a>
                             </li>
 
