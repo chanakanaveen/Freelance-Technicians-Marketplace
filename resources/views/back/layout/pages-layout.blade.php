@@ -464,9 +464,9 @@
 
 
 						<li>
-							<a href="invoice.html" class="dropdown-toggle no-arrow">
+							<a href="{{ route('seller.job') }}" class="dropdown-toggle no-arrow {{ Route::is('seller.job') ? 'active' : '' }}">
 								<span class="micon bi bi-receipt-cutoff"></span
-								><span class="mtext">Invoice</span>
+								><span class="mtext">Job</span>
 							</a>
 						</li>
 
@@ -524,12 +524,15 @@
                         @yield('content')
                     </div>
 				</div>
-				<div class="footer-wrap pd-20 mb-20 card-box">
+                <br><br><br><br>
+                {{-- <div class="row"> <br> </div> --}}
+                {{-- footer --}}
+				{{-- <div class="footer-wrap pd-20 mb-20 card-box">
 					Design By
 					<a href="#" target="_blank"
 						>Chanaka Naveen</a
 					>
-				</div>
+				</div> --}}
 			</div>
 		</div>
 

@@ -297,4 +297,47 @@ class SellerController extends Controller
 
         // return redirect()->route('admin.profile')->with('success','Profile updated successfully');
     }
+
+    //job
+    public function job(Request $request){
+        $seller = null;
+        if( Auth::guard('seller')->check() ){
+            $seller = Seller::findOrFail(auth()->id());
+        }
+        $data = [
+            'pageTitle'=>'Post Job',
+            'seller'=>$seller,
+        ];
+        return view('back.pages.seller.job',$data);
+    }
+
+    //job verify
+    public function sellerDocumentUpload(Request $request){
+        $request->validate([
+            'comment'=>'required',
+            'Certificate' => 'image|mimes:jpg,jpeg,png'
+        ]);
+
+        $seller = Seller::findOrFail(auth()->id());
+        $seller->About_Field  = $request->comment;
+        $seller->status  = "2";
+
+        if($request->hasFile('Certificate')){
+            $file = $request->file('Certificate');
+            $extension = $file->getClientoriginalExtension();
+            $path = 'images/users/sellers/certificate';
+            $filename = 'SELLER_CERTIFICATE_'.rand(2,1000).$seller->id.time().uniqid().'.'.$extension;
+
+            $upload = $file->move($path,$filename);
+            if($upload){
+                $seller->Certificate = $filename;
+                $seller->save();
+
+                return redirect()->route('seller.job')->with('success','Your Certificate has been successfully uploaded.');
+            }else{
+                return redirect()->route('seller.profile')->with('fail','Something went wrong.');
+            }
+        }
+
+    }
 }

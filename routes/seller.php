@@ -33,6 +33,8 @@ Route::prefix('seller')->name('seller.')->group(function(){
            Route::post('/save-seller-details','saveSellerDetails')->name('save-seller-details');
            Route::post('/update_profile','updateProfile')->name('update_profile');
            Route::get('/change-password','changePassword')->name('change-password');
+           Route::get('/job','job')->name('job');
+           Route::post('/document-upload','sellerDocumentUpload')->name('document-upload');
         });
 
         // //Product routes
