@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Admin;
 use App\Models\Client;
+use App\Models\Seller;
 use constGuards;
 use constDefaults;
 use Illuminate\Support\Facades\DB;
@@ -287,7 +288,7 @@ class AdminController extends Controller
     }
 
     //user view page
-    public function users(Request $request){ //dd('sssssss');
+    public function users(Request $request){
         $admin = null;
         if( Auth::guard('admin')->check() ){
             $admin = Admin::findOrFail(auth()->id());
@@ -307,8 +308,8 @@ class AdminController extends Controller
         return view('back.pages.admin.users', $data);
     }
 
-     //user view page
-     public function sellers(Request $request){ //dd('sssssss');
+    //registerd seller page
+    public function sellers(Request $request){
         $admin = null;
         if( Auth::guard('admin')->check() ){
             $admin = Admin::findOrFail(auth()->id());
@@ -320,13 +321,111 @@ class AdminController extends Controller
                 ->leftJoin('services as f','f.id','=','a.service2')
                 ->leftJoin('services as g','g.id','=','a.service3')
                 ->get();
-        
+
         $data = [
-            'pageTitle'=>'Client Profile',
+            'pageTitle'=>'Registerd Sellers',
             'sellers'=>$sellers,
             'admin'=>$admin,
         ];
 
         return view('back.pages.admin.sellers', $data);
+    }
+
+    //registerd seller page
+    public function pendingSeller(Request $request){
+        $admin = null;
+        if( Auth::guard('admin')->check() ){
+            $admin = Admin::findOrFail(auth()->id());
+        }
+        $sellers = DB::table('sellers as a')->selectRaw('a.id, a.name, a.email, a.phone, a.address, a.picture, c.name_en as district, d.name_en as city, e.title  as service1, f.title  as service2, g.title  as service3, IF(a.status = 1, "Verifyed", IF(a.status = 2,"Pending","Not verified")) as status, DATE_FORMAT(a.created_at, "%Y-%m-%d") as date, a.About_Field , a.Certificate ')
+                ->leftJoin('districts as c','c.id','=','a.districts')
+                ->leftJoin('cities as d','d.id','=','a.cities')
+                ->leftJoin('services as e','e.id','=','a.service1')
+                ->leftJoin('services as f','f.id','=','a.service2')
+                ->leftJoin('services as g','g.id','=','a.service3')
+                ->get();
+
+        $data = [
+            'pageTitle'=>'Pending Sellers',
+            'sellers'=>$sellers,
+            'admin'=>$admin,
+        ];
+
+        return view('back.pages.admin.pending-sellers', $data);
+    }
+
+    //seller verify
+    public function sellerVerify(Request $request){
+        //update status
+        $seller = Seller::findOrFail($request->seid);
+        $seller->status = 1;
+        $saved = $seller->save();
+
+        if($saved){ // send mail to seller
+            //generate token
+            $token = base64_encode(Str::random(64));
+
+            //send email
+            $data = array(
+                'seller' => $seller,
+            );
+
+            $mail_body = view('email-templates.seller-verifed-template',$data)->render();
+
+            $mailConfig = array(
+                'mail_from_email' => env('EMAIL_FROM_ADDRESS'),
+                'mail_from_name' => env('EMAIL_FROM_NAME'),
+                'mail_recipient_email' => $seller->email,
+                'mail_recipient_name' => $seller->name,
+                'mail_subject' => 'Job Post Verified Successful',
+                'mail_body' => $mail_body
+            );
+
+            sendEmail($mailConfig);
+
+            return response()->json(['status'=>1,'msg'=>'Seller verified successfully completed']);
+
+        }else{
+            return response()->json(['status'=>0,'msg'=>'Something went wrong']);
+        }
+
+    }
+
+    //seller unverify
+    public function sellerUnverify(Request $request){
+        $seller = Seller::findOrFail($request->seid);
+        $seller->status = 2;
+        $saved = $seller->save();
+
+        if($saved){ // send mail to seller
+            //generate token
+            $token = base64_encode(Str::random(64));
+
+            //send email
+            $data = array(
+                'seller' => $seller,
+            );
+
+            $mail_body = view('email-templates.seller-unverifed-template',$data)->render();
+
+            $mailConfig = array(
+                'mail_from_email' => env('EMAIL_FROM_ADDRESS'),
+                'mail_from_name' => env('EMAIL_FROM_NAME'),
+                'mail_recipient_email' => $seller->email,
+                'mail_recipient_name' => $seller->name,
+                'mail_subject' => 'Job Post Request Unverified',
+                'mail_body' => $mail_body
+            );
+
+            sendEmail($mailConfig);
+
+            return response()->json(['status'=>1,'msg'=>'Seller job request unverified']);
+
+        }else{
+            return response()->json(['status'=>0,'msg'=>'Something went wrong']);
+        }
+
+
+
     }
 }

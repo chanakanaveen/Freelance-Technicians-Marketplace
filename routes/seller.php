@@ -35,6 +35,7 @@ Route::prefix('seller')->name('seller.')->group(function(){
            Route::get('/change-password','changePassword')->name('change-password');
            Route::get('/job','job')->name('job');
            Route::post('/document-upload','sellerDocumentUpload')->name('document-upload');
+           
         });
 
         // //Product routes

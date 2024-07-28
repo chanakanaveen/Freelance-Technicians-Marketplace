@@ -24,5 +24,9 @@ Route::prefix('admin')->name('admin.')->group(function (){
         Route::post('/change-password',[AdminController::class,'changePassword'])->name('change-password');
         Route::get('/users', [AdminController::class,'users'])->name('users');
         Route::get('/sellers', [AdminController::class,'sellers'])->name('sellers');
+        Route::get('/pending-seller', [AdminController::class,'pendingSeller'])->name('pending-seller');
+        Route::post('/seller-verify',[AdminController::class,'sellerVerify'])->name('seller-verify');
+        Route::post('/seller-unverify',[AdminController::class,'sellerUnverify'])->name('seller-unverify');
+
     });
 });

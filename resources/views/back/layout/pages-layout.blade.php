@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 		<!-- Basic Page Info -->
 		<meta charset="utf-8" />
 		<title>@yield('pagetitle')</title>
@@ -44,6 +45,24 @@
 		/>
 		<link rel="stylesheet" type="text/css" href="/back/vendors/styles/style.css" />
 
+        <!-- switchery css -->
+		<link
+        rel="stylesheet"
+        type="text/css"
+        href="/back/src/plugins/switchery/switchery.min.css"
+    />
+    <!-- bootstrap-touchspin css -->
+		<link
+        rel="stylesheet"
+        type="text/css"
+        href="/back/src/plugins/bootstrap-touchspin/jquery.bootstrap-touchspin.css"
+    />
+    <!-- bootstrap-tagsinput css -->
+		<link
+        rel="stylesheet"
+        type="text/css"
+        href="/back/src/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css"
+    />
 
 		<!-- Google Tag Manager -->
 		<script>
@@ -440,6 +459,13 @@
                                 </a>
                             </li>
 
+							<li class="dropdown">
+                                <a href="{{ route('admin.pending-seller') }}" class="dropdown-toggle no-arrow {{ route::is('admin.pending-seller')? 'active' : '' }}">
+                                    <span class="micon fa fa-user-secret"></span
+                                    ><span class="mtext">Pending Seller</span>
+                                </a>
+                            </li>
+
                             <li class="dropdown">
                                 <a href="{{ route('admin.sellers') }}" class="dropdown-toggle no-arrow {{ route::is('admin.sellers')? 'active' : '' }}">
                                     <span class="micon bi bi-people-fill"></span
@@ -549,6 +575,7 @@
 		<script src="/back/vendors/scripts/script.min.js"></script>
 		<script src="/back/vendors/scripts/process.js"></script>
 		<script src="/back/vendors/scripts/layout-settings.js"></script>
+
         <script>
 			if( navigator.userAgent.indexOf("Firefox") != -1 ){
 				history.pushState(null, null, document.URL);
@@ -565,6 +592,10 @@
 		<script type="text/javascript" src="/back/src/plugins/noty/layouts/topRight.js"></script>
 		<script type="text/javascript" src="/back/src/plugins/noty/layouts/top.js"></script>
 		<script type="text/javascript" src="/back/src/plugins/noty/themes/default.js"></script>
+        <script src="/back/src/plugins/switchery/switchery.min.js"></script>
+        <script src="/back/src/plugins/bootstrap-touchspin/jquery.bootstrap-touchspin.js"></script>
+        <script src="/back/vendors/scripts/advanced-components.js"></script>
+		<script src="/back/src/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
         <script>
 			window.addEventListener('showToastr', function(event){
                   toastr.remove();
