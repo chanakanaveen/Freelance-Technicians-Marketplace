@@ -36,6 +36,7 @@ Route::prefix('seller')->name('seller.')->group(function(){
            Route::get('/job','job')->name('job');
            Route::post('/document-upload','sellerDocumentUpload')->name('document-upload');
            
+
         });
 
         // //Product routes

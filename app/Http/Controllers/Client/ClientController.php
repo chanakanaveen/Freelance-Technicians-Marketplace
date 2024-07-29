@@ -35,8 +35,14 @@ class ClientController extends Controller
 
     //client home
     public function home(Request $request){
+        $client = null;
+        if( Auth::guard('client')->check() ){
+            $client = Auth::guard('client')->user();
+        }
+
         $data = [
-            'pageTitle'=>'Client Dashboard'
+            'pageTitle'=>'Client Dashboard',
+            'client'=>$client,
         ];
         return view('back.pages.client.home',$data);
     }
@@ -240,6 +246,47 @@ class ClientController extends Controller
         }else{
             return redirect()->route('client.profile')->with('fail','Something went wrong.');
         }
+
+    }
+
+    //find servise page
+    public function findServise(Request $request){
+
+        $client = DB::table('clients as a')->selectRaw('a.name, b.name_en as city, CONCAT(b.latitude, ",", b.longitude) AS location')
+                    ->leftJoin('cities as b','b.id','=','a.cities')
+                    ->where('a.id',auth()->id())
+                    ->first();
+
+        $services = DB::table('services')->get();
+
+        $data = [
+            'pageTitle'=>'Find Servise',
+            'client'=>$client,
+            'services'=>$services,
+        ];
+        return view('back.pages.client.find-servise',$data);
+    }
+
+    //find sellers
+    public function findSellers(Request $request){
+        $client = null;
+        if( Auth::guard('client')->check() ){
+            $client = client::findOrFail(auth()->id());
+        }
+
+        $nearestseller = DB::table('sellers as a')->selectRaw('a.id, a.name, a.phone, a.email, a.address, a.picture, b.name_en as city, CONCAT(b.latitude, ",", b.longitude) AS location')
+                    ->leftJoin('cities as b','b.id','=','a.cities')
+                    ->where('a.status',1)
+                    // ->where('a.cities',$client->cities)
+                    ->get();
+        // dd($nearestseller);
+
+        $data = [
+            'pageTitle'=>'Find Selelrs',
+            'client'=>$client,
+            'nearestseller'=>$nearestseller,
+        ];
+        return view('back.pages.client.find-sellers',$data);
 
     }
 }

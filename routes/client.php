@@ -27,10 +27,12 @@ Route::prefix('client')->name('client.')->group(function(){
            Route::post('/logout','logoutHandler')->name('logout');
            Route::get('/client-details','clientDetails')->name('client-details');
            Route::post('/save-client-details','saveClientDetails')->name('save-client-details');
-
+           Route::get('/find-servise','findServise')->name('find-servise');
            Route::get('/profile','profileView')->name('profile');
            Route::post('/update_profile','updateProfile')->name('update_profile');
            Route::post('/change-profile-picture','changeProfilePicture')->name('change-profile-picture');
+           Route::post('/find-sellers','findSellers')->name('find-sellers');
+
            Route::get('/change-password','changePassword')->name('change-password');
            Route::get('/shop-settings','shopSettings')->name('shop-settings');
            Route::post('/shop-setup','shopSetup')->name('shop-setup');

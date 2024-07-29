@@ -527,6 +527,17 @@
 
                             <li>
                                 <a
+                                    href="{{ route('client.find-servise') }}"
+
+                                    class="dropdown-toggle no-arrow {{ Route::is('client.find-servise') ? 'active' : '' }}"
+                                >
+                                    <span class="micon bi bi-search"></span>
+                                    <span class="mtext">Find Service</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a
                                     href="{{ route('client.profile') }}"
 
                                     class="dropdown-toggle no-arrow {{ Route::is('client.profile') ? 'active' : '' }}"

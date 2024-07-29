@@ -57,6 +57,28 @@ class AdminController extends Controller
 
     }
 
+    //home page
+    public function home(Request $request){
+        $admin = null;
+        if( Auth::guard('admin')->check() ){
+            $admin = Admin::findOrFail(auth()->id());
+        }
+
+        $clientCount =  DB::table('clients')->count();
+        $sellersCount =  DB::table('sellers')->count();
+        $servicesCount =  DB::table('services')->count();
+
+        $data = [
+            'pageTitle'=>'Admin Home ',
+            'admin'=>$admin,
+            'clients' =>$clientCount,
+            'sellers' =>$sellersCount,
+            'services' => $servicesCount,
+        ];
+
+        return view('back.pages.admin.home', $data);
+    }
+
     //logout
     public function logoutHandler(Request $request){
         Auth::guard('admin')->logout();
