@@ -13,7 +13,7 @@ class FrontendController extends Controller
         $sellersCount =  DB::table('sellers')->count();
         $servicesCount =  DB::table('services')->count();
         $servicseRequestCount =  DB::table('service_requests')->count();
-        
+
         $data = [
             'title' => 'Home Page',
             'clients' =>$clientCount,
@@ -22,5 +22,21 @@ class FrontendController extends Controller
             'serviceRequests' => $servicseRequestCount
         ];
         return view('front.layout.pages-layout',$data);
+    }
+
+    //about page
+    public function aboutPage(){
+        $data = [
+            'title' => 'About Page'
+        ];
+        return view('front.pages.about',$data);
+    }
+
+    //contact page
+    public function contactPage(){
+        $data = [
+            'title' => 'Contact Page'
+        ];
+        return view('front.pages.contact',$data);
     }
 }

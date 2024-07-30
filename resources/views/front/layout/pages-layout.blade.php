@@ -83,7 +83,7 @@
                                         <nav>
                                             <ul>
                                                 <li class="mega">
-                                                    <a class="nav-link" href="#">HOME</a>
+                                                    <a class="nav-link" href="{{ route('home-page') }}">HOME</a>
                                                     {{-- <ul class="submenu">
                                                         <div class="container flex-mega">
                                                             <li class="menu-item">
@@ -109,7 +109,7 @@
                                                         </div>
                                                     </ul> --}}
                                                 </li>
-                                                <li><a class="nav-link" href="aboutus.html">ABOUT</a></li>
+                                                <li><a class="nav-link" href="{{ route('about-page') }}">ABOUT</a></li>
                                                 <li class="has-dropdown">
                                                     <a class="nav-link" href="#">REGISTER</a>
                                                     <ul class="submenu">
@@ -126,7 +126,7 @@
                                                     </ul>
                                                 </li>
 
-                                                <li><a class="nav-link" href="contact.html">CONTACT</a></li>
+                                                <li><a class="nav-link" href="{{ route('contact-page') }}">CONTACT</a></li>
                                             </ul>
                                         </nav>
                                     </div>
