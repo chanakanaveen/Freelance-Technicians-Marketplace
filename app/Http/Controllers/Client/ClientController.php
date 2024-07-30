@@ -9,6 +9,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Client;
+use App\Models\ServiceRequest;
 use App\Models\VerificationToken;
 use Illuminate\Support\Facades\DB;
 use constGuards;
@@ -269,13 +270,22 @@ class ClientController extends Controller
 
     //find sellers
     public function findSellers(Request $request){
+        $request->validate([
+            'service'=>'required',
+        ]);
+
         $client = null;
         if( Auth::guard('client')->check() ){
             $client = client::findOrFail(auth()->id());
         }
+        $services = DB::table('services')->get();
+        $servicesid = $request->service;
 
-        $nearestseller = DB::table('sellers as a')->selectRaw('a.id, a.name, a.phone, a.email, a.address, a.picture, b.name_en as city, CONCAT(b.latitude, ",", b.longitude) AS location')
+        $nearestseller = DB::table('sellers as a')->selectRaw('a.id, a.name, a.phone, a.email, a.address, a.picture,  e.title  as service1, f.title  as service2, g.title  as service3,  b.name_en as city, CONCAT(b.latitude, ",", b.longitude) AS location')
                     ->leftJoin('cities as b','b.id','=','a.cities')
+                    ->leftJoin('services as e','e.id','=','a.service1')
+                    ->leftJoin('services as f','f.id','=','a.service2')
+                    ->leftJoin('services as g','g.id','=','a.service3')
                     ->where('a.status',1)
                     // ->where('a.cities',$client->cities)
                     ->get();
@@ -285,8 +295,57 @@ class ClientController extends Controller
             'pageTitle'=>'Find Selelrs',
             'client'=>$client,
             'nearestseller'=>$nearestseller,
+            'serviseid'=>$servicesid,
         ];
+
         return view('back.pages.client.find-sellers',$data);
 
+    }
+
+    //servise request
+    public function serviseRequest(Request $request){
+        $client = client::findOrFail(auth()->id());
+
+        //save data on service_requests table
+        $serviseRequest = new ServiceRequest();
+        $serviseRequest->client_id = $client->id;
+        $serviseRequest->seller_id = $request->slid;
+        $serviseRequest->servise_id = $request->serviseid;
+        $serviseRequest->status = "1";
+        $saved = $serviseRequest->save();
+
+        if($saved){
+
+            $seller = DB::table('sellers')->where('id',$request->slid)->first();
+            $service = DB::table('services')->where('id',$request->serviseid)->first();
+
+            //send email
+            $data = array(
+                'client' => $client,
+                'seller' => $seller,
+                'service' => $service,
+            );
+
+            $mail_body = view('email-templates.service-request-template',$data)->render();
+
+            $mailConfig = array(
+                'mail_from_email' => env('EMAIL_FROM_ADDRESS'),
+                'mail_from_name' => env('EMAIL_FROM_NAME'),
+                'mail_recipient_email' => $seller->email,
+                'mail_recipient_name' => $seller->name,
+                'mail_subject' => 'New Service Request from TechConnect ',
+                'mail_body' => $mail_body
+            );
+
+            sendEmail($mailConfig);
+
+
+            return response()->json(['status'=>1,'msg'=>'Your request has been successfully sent to the seller.']);
+        }else{
+            return response()->json(['status'=>0,'msg'=>'Something went wrong']);
+
+        }
+
+        
     }
 }

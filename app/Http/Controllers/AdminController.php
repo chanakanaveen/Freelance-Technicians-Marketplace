@@ -67,6 +67,7 @@ class AdminController extends Controller
         $clientCount =  DB::table('clients')->count();
         $sellersCount =  DB::table('sellers')->count();
         $servicesCount =  DB::table('services')->count();
+        $servicseRequestCount =  DB::table('service_requests')->count();
 
         $data = [
             'pageTitle'=>'Admin Home ',
@@ -74,6 +75,7 @@ class AdminController extends Controller
             'clients' =>$clientCount,
             'sellers' =>$sellersCount,
             'services' => $servicesCount,
+            'serviceRequests' => $servicseRequestCount
         ];
 
         return view('back.pages.admin.home', $data);

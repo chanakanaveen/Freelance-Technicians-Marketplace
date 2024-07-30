@@ -1,58 +1,97 @@
 @extends('back.layout.pages-layout')
 @section('pagetitle', isset($pageTitle) ? $pageTitle : 'Find Servise')
 @section('content')
-<div class="row-12">
+{{-- <div class="row-12">
     <img src="/back/vendors/images/banner.png" alt="" />
-</div>
-
-{{-- <div class="card-box  height-100-p mb-10">
-    <div class="row align-items-center ">
-        <div class="col-md-12 pd-10">
-            <div class="col-md-12">
-                <h3 class="font-28 weight-500 mb-10 text-capitalize text-blue text-center">
-                    Get any tasks done by professionals
-                </h3>
-                <h5 class="font-28 weight-500 mb-10 text-capitalize ttext-secondary text-center">
-                    We have professionals ready to help
-                </h5>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <h4 class="font-18 text-center">
-                Your nearest town is <span style="color: red">{{ $client->city }}</span> and your location cordinate is <span style="color: rgb(248, 128, 30)">{{ $client->location }}</span>
-            </h4>
-        </div>
-    </div>
-
-    <form action="{{ route('client.find-sellers') }}" method="POST">
-        @csrf
-
-        <div class="row justify-content-center pd-5">
-            <div class="col-md-4" data-select2-id="8">
-                <div class="form-group" data-select2-id="7">
-                    <select class="custom-select2 form-control select2-hidden-accessible" name="service" id="service" style="width: 100%; height: 38px" data-select2-id="1" tabindex="-1" aria-hidden="true">
-                        <option value="" selected disabled>Select a service</option>
-                        @foreach ($services as $row)
-                            <option value="{{ $row->id }}">{{ $row->title }}</option>
-                        @endforeach
-                    </select>
-                    @error('service')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-            </div>
-        </div>
-
-        <div class="row justify-content-center pd-10">
-            <div class="col-md-4">
-                <button type="submit" class="btn btn-warning btn-lg btn-block">
-                    Search
-                </button>
-            </div>
-        </div>
-
-</form>
-
 </div> --}}
 
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-md-6 mb-20">
+        <div class="card-box height-100-p pd-20 min-height-200px">
+            <div class="d-flex justify-content-between pb-10">
+                <div class="h5 mb-0">Sellers</div>
+                <div class="pull-right">
+                    <a href="{{ route('client.find-servise') }}" class="btn btn-primary btn-sm">
+                     <i class="ion-arrow-left-a"></i> Back to find servise
+                    </a>
+                </div>
+            </div>
+            <div class="user-list">
+                <ul>
+                    <input type="hidden" name="serviseid" id="serviseid" value="{{ $serviseid }}">
+                    @foreach ($nearestseller as $row )
+                        <li class="d-flex align-items-center justify-content-between">
+                            <div class="name-avatar d-flex align-items-center pr-2">
+                                <div class="avatar mr-2 flex-shrink-0">
+                                    <img
+                                       src="{{  asset('images/users/sellers/' . $row->picture ) }}"
+                                        class="border-radius-100 box-shadow"
+                                        width="80"
+                                        height="80"
+                                        alt=""
+                                    />
+                                </div>
+                                <div class="txt">
+                                    {{-- <span
+                                        class="badge badge-pill badge-sm"
+                                        data-bgcolor="#e7ebf5"
+                                        data-color="#265ed7"
+                                        >4.9</span
+                                    > --}}
+                                    <div class="font-14 weight-600">{{ $row->name }}</div>
+                                    <div class="font-13 weight-500" data-color="#b2b1b6">{{ $row->service1 }} | {{ $row->service2 }} | {{ $row->service3 }}</div>
+                                    <div class="font-12 weight-600">{{ $row->email }} - {{ $row->phone }}</div>
+                                    <div class="font-12 weight-600">{{ $row->city }}</div>
+                                </div>
+                            </div>
+                            <div class="cta flex-shrink-0">
+                                <div type="button" name="request" id="request" data-id="{{ $row->id }}" class="btn btn-sm btn-outline-primary">Request sevise</div>
+                            </div>
+                        </li>
+                    @endforeach
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@endsection
+
+
+@section('myscript')
+<script>
+$(document).ready(function(){
+
+    //request click
+    $(document).on("click", "#request", function(){
+        var slid =  $(this).data("id");
+        var serviseid = $("#serviseid").val();
+       console.log('request click',slid);
+        console.log('servise id', serviseid);
+       $.ajax({
+            url:'{{ route('client.servise-request') }}',
+            method:"POST",
+            data:{"slid":slid,"serviseid":serviseid},
+            headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            beforeSend:function(){
+
+            },
+            success:function(response){
+                console.log(response);
+                if(response.status == 1){
+                    toastr.success(response.msg);
+                }else{
+                    toastr.error(response.msg);
+                }
+            },
+            error:function(xhr, status, error){
+                console.log(xhr.responseText);
+            }
+        });
+    });
+
+});
+
+</script>
 @endsection

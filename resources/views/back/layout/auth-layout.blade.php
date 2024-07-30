@@ -54,8 +54,8 @@
 				class="container-fluid d-flex justify-content-between align-items-center"
 			>
 				<div class="brand-logo">
-					<a href="login.html">
-						<img src="/back/vendors/images/deskapp-logo.svg" alt="" />
+					<a href="{{ route('home-page') }}">
+						<img src="/back/vendors/images/logo.png" alt="" />
 					</a>
 				</div>
 				<div class="login-menu">
@@ -83,7 +83,14 @@
 			<div class="container">
 				<div class="row align-items-center">
 					<div class="col-md-6 col-lg-7">
-						<img src="/back/vendors/images/login-page-img.png" alt="" />
+                        @if (Route::is('admin.*'))
+                            <img src="/back/vendors/images/forgot-password.png" alt="" />
+                        @elseif (Route::is('seller.*'))
+                            <img src="/back/vendors/images/login-page-img.png" alt="" />
+                        @elseif (Route::is('client.*'))
+                            <img src="/back/vendors/images/register-page-img.png" alt="" />
+                        @endif
+
 					</div>
 					<div class="col-md-6 col-lg-5">
 						@yield('content')

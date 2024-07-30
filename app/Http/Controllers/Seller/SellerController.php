@@ -61,6 +61,7 @@ class SellerController extends Controller
         $seller->name = $request->name;
         $seller->email = $request->email;
         $seller->password = Hash::make($request->password);
+        $seller->status = "0";
         $saved = $seller->save();
 
         if( $saved ){

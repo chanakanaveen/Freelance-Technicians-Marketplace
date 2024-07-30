@@ -313,7 +313,7 @@ $(document).ready(function(){
     var selectid = '';
 
     //modal open
-    $("#view").click(function(){
+    $(document).on("click", "#view",function(){
        var about =  $(this).data("about");
        var url = $(this).data("url");
        $("#about").text(about);
@@ -323,7 +323,7 @@ $(document).ready(function(){
 
     });
 
-    $("#verify").change(function(value){
+    $(document).on("change", "#verify",function(value){
         selectid = $(this).data("id");
         var status = $(this).data("status");
         console.log(selectid,status);
@@ -335,8 +335,6 @@ $(document).ready(function(){
             // Checkbox is unchecked
             $("#unverfiymodal").modal('show');
         }
-
-
     });
 
     //verify confirm yes

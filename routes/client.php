@@ -31,7 +31,9 @@ Route::prefix('client')->name('client.')->group(function(){
            Route::get('/profile','profileView')->name('profile');
            Route::post('/update_profile','updateProfile')->name('update_profile');
            Route::post('/change-profile-picture','changeProfilePicture')->name('change-profile-picture');
-           Route::post('/find-sellers','findSellers')->name('find-sellers');
+           Route::match(['get', 'post'],'/find-sellers','findSellers')->name('find-sellers');
+           Route::post('/servise-request','serviseRequest')->name('servise-request');
+
 
            Route::get('/change-password','changePassword')->name('change-password');
            Route::get('/shop-settings','shopSettings')->name('shop-settings');
