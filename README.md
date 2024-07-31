@@ -1,72 +1,45 @@
-# Project Title
+# Ensure you have the following installed on your system:
+# Git
+# Node.js and npm (Node Package Manager) or Yarn
+# PHP >= 7.4
+# Node.js >= 12.x
 
-## Description
-This project is a web application built using PHP and JavaScript. It utilizes Blade templates for the frontend and includes various dependencies such as lodash and postcss.
+# Backend Setup
+# Clone the Repository:
+# git clone https://github.com/chanakanaveen/Freelance-Technicians-Marketplace
+# Open the Project in VS Code.
 
-## Prerequisites
-- PHP >= 7.4
-- Composer
-- Node.js >= 12.x
-- npm
-- Laravel Framework
-- lodash@4.17
-- postcss@8.1
+# Run XAMPP Apache and MySQL Server.
 
-## Installation
+# Install PHP Dependencies using Composer:
+# composer install
 
-### Backend Setup
-1. Clone the repository:
-    ```sh
-    git clone https://github.com/yourusername/yourproject.git
-    cd yourproject
-    ```
+# Copy the .env.example file to .env and configure your environment variables:
+# cp .env.example .env
 
-2. Install PHP dependencies using Composer:
-    ```sh
-    composer install
-    ```
+# Add the following variables to your .env file:
+EMAIL_HOST='sandbox.smtp.mailtrap.io'
+EMAIL_USERNAME='a68494840c6400'
+EMAIL_PASSWORD='f091cca8e246fb'
+EMAIL_ENCRYPTION='TLS'
+EMAIL_PORT=2525
+EMAIL_FROM_ADDRESS='info@techconnect.com'
+EMAIL_FROM_NAME='TechConnect'
 
-3. Copy the `.env.example` file to `.env` and configure your environment variables:
-    ```sh
-    cp .env.example .env
-    ```
+# Generate the Application Key:
+# php artisan key:generate
 
-4. Generate the application key:
-    ```sh
-    php artisan key:generate
-    ```
+# Create a Database:
+# Create a database named techconnect.
+# Update your .env file to use the new database:
+DB_DATABASE='techconnect'
 
-5. Run database migrations:
-    ```sh
-    php artisan migrate
-    ```
+# Import the Database:
+# In the project directory, locate the sql folder.
+# Use phpMyAdmin to import the SQL file into the techconnect database.
 
-### Frontend Setup
-1. Install Node.js dependencies using npm:
-    ```sh
-    npm install
-    ```
+# Start the Development Server:
+# php artisan serve
 
-2. Compile the assets:
-    ```sh
-    npm run dev
-    ```
-
-## Usage
-1. Start the development server:
-    ```sh
-    php artisan serve
-    ```
-
-2. Open your browser and navigate to `http://localhost:8000`.
-
-## Contributing
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature-branch`).
-3. Make your changes.
-4. Commit your changes (`git commit -m 'Add some feature'`).
-5. Push to the branch (`git push origin feature-branch`).
-6. Open a pull request.
-
-## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+# Open your Browser and Navigate to:
+# http://localhost:8000
