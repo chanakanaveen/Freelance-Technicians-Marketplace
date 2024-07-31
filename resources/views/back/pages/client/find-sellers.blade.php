@@ -12,7 +12,7 @@
                 <div class="h5 mb-0">Sellers</div>
                 <div class="pull-right">
                     <a href="{{ route('client.find-servise') }}" class="btn btn-primary btn-sm">
-                     <i class="ion-arrow-left-a"></i> Back to find servise
+                     <i class="ion-arrow-left-a"></i> Back to find service
                     </a>
                 </div>
             </div>
@@ -45,7 +45,7 @@
                                 </div>
                             </div>
                             <div class="cta flex-shrink-0">
-                                <div type="button" name="request" id="request" data-id="{{ $row->id }}" class="btn btn-sm btn-outline-primary">Request sevise</div>
+                                <div type="button" name="request" id="request" data-id="{{ $row->id }}" class="btn btn-sm btn-outline-primary">Request service</div>
                             </div>
                         </li>
                     @endforeach

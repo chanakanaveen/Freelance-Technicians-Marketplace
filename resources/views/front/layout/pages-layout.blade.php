@@ -114,7 +114,7 @@
                                                     <a class="nav-link" href="#">REGISTER</a>
                                                     <ul class="submenu">
                                                         <li><a href="{{ route('client.register') }}">Client</a></li>
-                                                        <li><a href="{{ route('seller.register') }}">Selelr</a></li>
+                                                        <li><a href="{{ route('seller.register') }}">Seller</a></li>
                                                     </ul>
                                                 </li>
                                                 <li class="has-dropdown">
@@ -122,7 +122,7 @@
                                                     <ul class="submenu">
                                                         <li><a href="{{ route('admin.login') }}">Admin</a></li>
                                                         <li><a href="{{ route('client.login') }}">Client</a></li>
-                                                        <li><a href="{{ route('seller.login') }}">Selller</a></li>
+                                                        <li><a href="{{ route('seller.login') }}">Seller</a></li>
                                                     </ul>
                                                 </li>
 
