@@ -49,3 +49,7 @@ DB_DATABASE='techconnect'
 
 # Open your Browser and Navigate to:
  http://localhost:8000
+
+Admin username : admin@mail.com
+Admin password : 123123
+
